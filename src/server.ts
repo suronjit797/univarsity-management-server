@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import 'colors'
+import userRoute from './app/modules/user/userRoute'
 
 import config from './config'
 import app from './app'
@@ -16,5 +17,7 @@ const bootFunctions = async () => {
     console.log('Database connection failed'.red.bold)
   }
 }
+
+app.use('/v1/users', userRoute)
 
 bootFunctions()
