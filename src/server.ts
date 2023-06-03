@@ -5,7 +5,6 @@ import app from './app'
 
 import { errorLogger, logger } from './shared/logger'
 
-
 const bootFunctions = async () => {
   try {
     if (!config.PORT) {

@@ -8,7 +8,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 
     const data = await userService.createUser({ uid, role, password })
 
-    if(!data){
+    if (!data) {
       next('User Create Failed')
     }
 
