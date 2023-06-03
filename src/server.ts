@@ -1,23 +1,26 @@
 import mongoose from 'mongoose'
-import 'colors'
-import userRoute from './app/modules/user/userRoute'
 
 import config from './config'
 import app from './app'
 
+import { errorLogger, logger } from './shared/logger'
+
+
 const bootFunctions = async () => {
   try {
+    if (!config.PORT) {
+      return errorLogger.error('Port is not found')
+    }
+
     await mongoose.connect(config.DB_URI as string)
-    console.log('🛢 Database connected'.blue.bold)
+    logger.info('🛢 Database connected...')
     app.listen(config.PORT, () => {
-      console.log(`App listening on port ${config.PORT}...`.green.bold)
-      console.log(config.DB_URI)
+      logger.info(`App listening on port ${config.PORT}...`)
+      logger.info(config.DB_URI)
     })
   } catch (error) {
-    console.log('Database connection failed'.red.bold)
+    errorLogger.error('Database connection failed')
   }
 }
-
-app.use('/v1/users', userRoute)
 
 bootFunctions()
