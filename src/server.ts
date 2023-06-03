@@ -1,9 +1,17 @@
 import mongoose from 'mongoose'
 import 'colors'
-import userRoute from './app/modules/user/userRoute'
 
 import config from './config'
 import app from './app'
+
+import userRoute from './app/modules/user/userRoute'
+
+// route
+app.use('/api/v1/users', userRoute)
+
+
+
+
 
 const bootFunctions = async () => {
   try {
@@ -18,6 +26,5 @@ const bootFunctions = async () => {
   }
 }
 
-app.use('/v1/users', userRoute)
 
 bootFunctions()
