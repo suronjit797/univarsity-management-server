@@ -1,10 +1,13 @@
-import { NextFunction, Request, Response } from 'express'
+import { RequestHandler } from 'express'
 import * as userService from './userService'
 
-export const createUser = async (req: Request, res: Response, next: NextFunction) => {
+export const createUser: RequestHandler = async (req, res, next) => {
   try {
     const { uid, role, password } = req.body
-    console.log(req.body)
+
+    if (!password) {
+      throw new Error('password is required')
+    }
 
     const data = await userService.createUser({ uid, role, password })
 

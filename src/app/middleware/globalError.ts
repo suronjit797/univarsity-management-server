@@ -1,25 +1,33 @@
-import { NextFunction, Request, Response } from 'express'
+import { ErrorRequestHandler } from 'express'
 import config from '../../config'
 import { handleValidationError } from '../../ErrorHandler/HandlerValidationError'
 import { IErrorMessage } from '../../interfaces/genericError'
-import { Error } from 'mongoose'
+import { errorLogger } from '../../shared/logger'
 
-const globalError = (err: Error.ValidationError, req: Request, res: Response, next: NextFunction) => {
+const globalError: ErrorRequestHandler = (error, req, res, next) => {
   let statusCode = 500
-  let message = 'Internal server error occurred'
-  let errorMessages: IErrorMessage[] = []
+  let message = error.message || 'Internal server error occurred'
+  let errorMessages: IErrorMessage[] = [
+    {
+      path: '',
+      message: error.message || 'Internal server error occurred',
+    },
+  ]
 
-  if (err?.name === 'ValidationError') {
-    errorMessages = handleValidationError(err)
-    statusCode = 400
-    message = 'Please provide required fields'
+  if (error?.name === 'ValidationError') {
+    const genericError = handleValidationError(error)
+    errorMessages = genericError.errorMessages
+    statusCode = genericError.statusCode
+    message = genericError.message
   }
+
+  errorLogger(message)
 
   res.status(statusCode).send({
     success: false,
     message,
     errorMessages,
-    stack: config.NODE_ENV !== 'production' && err?.stack,
+    stack: config.NODE_ENV !== 'production' && error?.stack,
   })
   next()
 }

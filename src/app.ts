@@ -15,8 +15,8 @@ app.use(morgan('tiny'))
 // route
 app.use('/api/v1/users', userRoute)
 
-app.get('/', (req: Request, res: Response, next) => {
-  // res.send('<h1> Welcome to PH University </h1>')
+app.get('/', async (req: Request, res: Response, next) => {
+  res.send('<h1> Welcome to PH University </h1>')
   next()
 })
 

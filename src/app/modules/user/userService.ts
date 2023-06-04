@@ -1,10 +1,11 @@
 import config from '../../../config'
 import { IUser } from './userInterface'
-import User from './userShcema'
+import User from './userModel'
 import { generateUserId } from './userUtils'
 
 export const createUser = async (user: IUser): Promise<IUser | null> => {
   // auto generated userId
+
   const lastAddedStudent = await User.findOne().sort({ createdAt: -1 }).exec()
   let lastNumber = 0
   if (lastAddedStudent?.uid) {
