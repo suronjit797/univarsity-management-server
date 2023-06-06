@@ -1,0 +1,12 @@
+[error] 23:03:13: [
+  {
+    "code": "invalid_type",
+    "expected": "string",
+    "received": "number",
+    "path": [
+      "password"
+    ],
+    "message": "Expected string, received number"
+  }
+]
+[error] 23:04:29: Validation Error

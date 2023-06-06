@@ -3,13 +3,7 @@ import * as userService from './userService'
 
 export const createUser: RequestHandler = async (req, res, next) => {
   try {
-    const { uid, role, password } = req.body
-
-    if (!password) {
-      throw new Error('password is required')
-    }
-
-    const data = await userService.createUser({ uid, role, password })
+    const data = await userService.createUser(req.body)
 
     if (!data) {
       next('User Create Failed')

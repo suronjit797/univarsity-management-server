@@ -3,6 +3,8 @@ import config from '../../config'
 import { handleValidationError } from '../../ErrorHandler/HandlerValidationError'
 import { IErrorMessage } from '../../interfaces/genericError'
 import { errorLogger } from '../../shared/logger'
+import { ZodError } from 'zod'
+import { handleZodError } from '../../ErrorHandler/handleZodError'
 
 const globalError: ErrorRequestHandler = (error, req, res, next) => {
   let statusCode = 500
@@ -19,6 +21,11 @@ const globalError: ErrorRequestHandler = (error, req, res, next) => {
     errorMessages = genericError.errorMessages
     statusCode = genericError.statusCode
     message = genericError.message
+  } else if (error instanceof ZodError) {
+    const zodError = handleZodError(error)
+    errorMessages = zodError.errorMessages
+    statusCode = zodError.statusCode
+    message = zodError.message
   }
 
   errorLogger(message)
