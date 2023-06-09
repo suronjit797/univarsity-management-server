@@ -1,7 +1,11 @@
 import express from 'express'
 import * as userController from './userController'
-const router = express.Router()
+import { userValidationZod } from './userValidation'
+import { validatorMiddleware } from '../../middleware/validatorMiddleware'
 
-router.post('/create', userController.createUser)
+const userRouter = express.Router()
 
-export default router
+userRouter.post('/create', validatorMiddleware(userValidationZod), userController.createUser)
+userRouter.get('/all', userController.getAllUsers)
+
+export default userRouter

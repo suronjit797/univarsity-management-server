@@ -1,22 +1,45 @@
-import { NextFunction, Request, Response } from 'express'
+import { RequestHandler } from 'express'
 import * as userService from './userService'
+import sendResponse from '../../../shared/sendResponse'
+import { TPayload } from '../../../interfaces/responseInterface'
+import httpStatus from 'http-status'
+import { IUser } from './userInterface'
+import pic from '../../../shared/pick'
+import { paginationOptionArr } from '../../../constants/pagination'
 
-export const createUser = async (req: Request, res: Response, next: NextFunction) => {
+export const createUser: RequestHandler = async (req, res, next) => {
   try {
-    const { uid, role, password } = req.body
-    console.log(req.body)
+    const data = await userService.createUserService(req.body)
 
-    const data = await userService.createUser({ uid, role, password })
-
-    if(!data){
+    if (!data) {
       next('User Create Failed')
     }
-
-    res.status(200).send({
+    const payload: TPayload<IUser | null> = {
+      statusCode: httpStatus.OK,
       success: true,
       message: 'User created successfully',
-      results: data,
-    })
+      data,
+    }
+    sendResponse(res, payload)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getAllUsers: RequestHandler = async (req, res, next) => {
+  try {
+    const paginationOption = pic(req.query, paginationOptionArr)
+
+    const users = await userService.getAllUserService(paginationOption)
+
+    const payload: TPayload<IUser[]> = {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get user successfully',
+      meta: users.meta,
+      data: users.data,
+    }
+    sendResponse(res, payload)
   } catch (error) {
     next(error)
   }

@@ -6,5 +6,12 @@ export const handleValidationError = (err: mongoose.Error.ValidationError) => {
     path: item?.path,
     message: item?.message,
   }))
-  return errors
+
+  const result = {
+    success: false,
+    errorMessages: errors,
+    message: 'Validation Error',
+    statusCode: 403,
+  }
+  return result
 }

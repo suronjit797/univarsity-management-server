@@ -1,26 +1,30 @@
+import 'winston-daily-rotate-file'
 import { createLogger, format, transports } from 'winston'
-import moment from 'moment'
 import 'colors'
-import DailyRotateFile from 'winston-daily-rotate-file'
+import moment from 'moment'
 
-const { combine, timestamp, label, printf } = format
-
-const successFormate = printf(({ level, message, timestamp }) => {
-  const time = moment(timestamp).format('DD/MM/yyyy h:mm:ss')
-  return ` ${level}: ${time}:` + ` ${message}`
+// custom formatting
+const { combine, timestamp, printf } = format
+const formateSave = printf(({ level, message, timestamp }) => {
+  const time = moment(timestamp).format('HH:mm:ss')
+  return `[${level}] ${time}: ${message}`
 })
-const errorFormate = printf(({ level, message, timestamp }) => {
-  const time = moment(timestamp).format('DD/MM/yyyy h:mm:ss')
-  return ` ${level}: ${time}:` + ` ${message}`
+const sFormateLog = printf(({ level, message, timestamp }) => {
+  const time = moment(timestamp).format('HH:mm:ss')
+  return `## [${level}] ${time}: ` + `${message}`.green.bold
+})
+const eFormateLog = printf(({ level, message, timestamp }) => {
+  const time = moment(timestamp).format('HH:mm:ss')
+  return `## [${level}] ${time}: ` + `${message}`.red.bold
 })
 
-export const logger = createLogger({
+// success logger
+const sLogger = createLogger({
   level: 'info',
-  format: combine(label({ label: 'UM' }), timestamp(), successFormate),
+  format: combine(timestamp(), formateSave, format.colorize()),
   transports: [
-    // new transports.File({ filename: `log/winston-${moment().format('DD-MM-YYYY')}/success.log`, level: 'info' }),
-    new DailyRotateFile({
-      filename: 'log/winston/success/%DATE%_success.log',
+    new transports.DailyRotateFile({
+      filename: 'log/winston/success/success-%DATE%.log',
       datePattern: 'YYYY-MM-DD-HH',
       zippedArchive: true,
       maxSize: '20m',
@@ -28,13 +32,14 @@ export const logger = createLogger({
     }),
   ],
 })
-export const errorLogger = createLogger({
+
+// error logger
+const eLogger = createLogger({
   level: 'error',
-  format: combine(label({ label: 'UM' }), timestamp(), errorFormate),
+  format: combine(timestamp(), formateSave, format.colorize()),
   transports: [
-    // new transports.File({ filename: 'log/winston/error.log', level: 'error' })
-    new DailyRotateFile({
-      filename: 'log/winston/errors/%DATE%_error.log',
+    new transports.DailyRotateFile({
+      filename: 'log/winston/error/error-%DATE%.log',
       datePattern: 'YYYY-MM-DD-HH',
       zippedArchive: true,
       maxSize: '20m',
@@ -43,25 +48,19 @@ export const errorLogger = createLogger({
   ],
 })
 
-const successFormateConsole = printf(({ level, message, timestamp }) => {
-  const time = moment(timestamp).format('DD/MM/yyyy h:mm:ss')
-  return ` ${level}: ${time}:` + ` ${message}`.green.bold
-})
-const errorFormateConsole = printf(({ level, message, timestamp }) => {
-  const time = moment(timestamp).format('DD/MM/yyyy h:mm:ss')
-  return ` ${level}: ${time}:` + ` ${message}`.red.bold
-})
-
-// console log
+// for development only
 if (process.env.NODE_ENV !== 'production') {
-  logger.add(
+  sLogger.add(
     new transports.Console({
-      format: combine(label({ label: 'UM' }), format.colorize(), successFormateConsole),
+      format: combine(timestamp(), sFormateLog, format.colorize()),
     })
   )
-  errorLogger.add(
+  eLogger.add(
     new transports.Console({
-      format: combine(label({ label: 'UM' }), format.colorize(), errorFormateConsole),
+      format: combine(timestamp(), eFormateLog, format.colorize()),
     })
   )
 }
+
+export const successLogger = (message: string) => sLogger.info(message)
+export const errorLogger = (message: string) => eLogger.error(message)
