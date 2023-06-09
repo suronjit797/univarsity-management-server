@@ -1,0 +1,5 @@
+[error] 18:46:51:  [500]: BSON field 'skip' value must be >= 0, actual value '-9'
+[error] 18:47:43:  [500]: BSON field 'skip' value must be >= 0, actual value '-9'
+[error] 18:48:35:  [500]: BSON field 'skip' value must be >= 0, actual value '-20'
+[error] 18:58:18:  [500]: Invalid sort value: { _id: aec }
+[error] 18:59:53:  [500]: Invalid sort value: { _id: ace }

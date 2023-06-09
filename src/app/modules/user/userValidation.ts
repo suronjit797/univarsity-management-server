@@ -6,4 +6,3 @@ export const userValidationZod = z.object({
   password: z.string(),
 })
 
-// await userZodSchema.parseAsync(req.body)

@@ -21,4 +21,20 @@ app.get('/', async (req: Request, res: Response, next) => {
 })
 
 app.use(globalError)
+
+// handle not found route
+
+app.use((req: Request, res: Response) => {
+  res.status(404).send({
+    success: false,
+    message: 'Route not found',
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: 'Route not found',
+      },
+    ],
+  })
+})
+
 export default app
