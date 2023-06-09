@@ -11,7 +11,7 @@ export const createSemester = async (data: ISemester): Promise<ISemester> => {
 
   const result = await AcademicSemester.create(data)
   if (!result) {
-    throw new ApiError(httpStatus.NOT_ACCEPTABLE, 'Semester create failed')
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Semester create failed')
   }
   return result
 }

@@ -3,8 +3,8 @@ import { validatorMiddleware } from '../../middleware/validatorMiddleware'
 import { semesterValidationZod } from './semesterValidation'
 import * as semesterController from './semesterController'
 
-const router = express.Router()
+const semesterRouter = express.Router()
 
-router.post('/create', validatorMiddleware(semesterValidationZod), semesterController.createSemester)
+semesterRouter.post('/create', validatorMiddleware(semesterValidationZod), semesterController.createSemester)
 
-export default router
+export default semesterRouter

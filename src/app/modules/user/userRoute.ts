@@ -3,8 +3,8 @@ import * as userController from './userController'
 import { userValidationZod } from './userValidation'
 import { validatorMiddleware } from '../../middleware/validatorMiddleware'
 
-const router = express.Router()
+const userRouter = express.Router()
 
-router.post('/create', validatorMiddleware(userValidationZod), userController.createUser)
+userRouter.post('/create', validatorMiddleware(userValidationZod), userController.createUser)
 
-export default router
+export default userRouter

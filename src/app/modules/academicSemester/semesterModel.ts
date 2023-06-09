@@ -34,11 +34,10 @@ const semesterSchema = new Schema<ISemester>(
   { timestamps: true }
 )
 
-
 semesterSchema.pre('save', async function (next) {
   const isExist = await AcademicSemester.find({ title: this.title, year: this.year })
   if (isExist.length > 0) {
-    throw new ApiError(httpStatus.NOT_ACCEPTABLE,`${this.title} already exists in ${this.year}`)
+    throw new ApiError(httpStatus.NOT_ACCEPTABLE, `${this.title} already exists in ${this.year}`)
   }
   next()
 })
