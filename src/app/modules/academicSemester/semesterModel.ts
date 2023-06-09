@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose'
 import { ISemester, SemesterModel } from './semesterInterface'
 import { months } from './semesterConstant'
-
+import ApiError from '../../../ApiError'
+import httpStatus from 'http-status'
 
 const semesterSchema = new Schema<ISemester>(
   {
@@ -32,6 +33,15 @@ const semesterSchema = new Schema<ISemester>(
   },
   { timestamps: true }
 )
+
+
+semesterSchema.pre('save', async function (next) {
+  const isExist = await AcademicSemester.find({ title: this.title, year: this.year })
+  if (isExist.length > 0) {
+    throw new ApiError(httpStatus.NOT_ACCEPTABLE,`${this.title} already exists in ${this.year}`)
+  }
+  next()
+})
 
 const AcademicSemester = model<ISemester, SemesterModel>('AcademicSemester', semesterSchema)
 

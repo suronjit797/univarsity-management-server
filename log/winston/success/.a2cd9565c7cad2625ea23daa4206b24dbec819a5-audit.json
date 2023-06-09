@@ -34,6 +34,21 @@
             "date": 1686068254426,
             "name": "log\\winston\\success\\success-2023-06-06-22.log",
             "hash": "7d638a91dc4058a25a4acfcae686383f1bb460c671b28ce49945d36ae91e6b12"
+        },
+        {
+            "date": 1686076434615,
+            "name": "log\\winston\\success\\success-2023-06-07-00.log",
+            "hash": "746ae09c349ef9cd0fa711959ac48f2cad62ae383c918cfef747928365a09799"
+        },
+        {
+            "date": 1686293115432,
+            "name": "log\\winston\\success\\success-2023-06-09-12.log",
+            "hash": "b4d8e1e0ac96fda6ebc4e228c027d6f27d09d7ec7e8a9f8cce0a62b245db49a6"
+        },
+        {
+            "date": 1686294004303,
+            "name": "log\\winston\\success\\success-2023-06-09-13.log",
+            "hash": "be54bd1d2a223a3fd74f12c5cc8aa9f7c1449bde047833a202059f68ef4a2237"
         }
     ],
     "hashType": "sha256"

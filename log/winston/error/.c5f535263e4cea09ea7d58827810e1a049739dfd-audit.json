@@ -34,6 +34,21 @@
             "date": 1686068254439,
             "name": "log\\winston\\error\\error-2023-06-06-22.log",
             "hash": "2608fcfabec823189a041d99700cd902b4c37770fc86d2c70704d017a69ab697"
+        },
+        {
+            "date": 1686076434623,
+            "name": "log\\winston\\error\\error-2023-06-07-00.log",
+            "hash": "4b79d37a41941cf9702c4614128e09a48ce1f83893cb1eeebcb13ea350706264"
+        },
+        {
+            "date": 1686293115449,
+            "name": "log\\winston\\error\\error-2023-06-09-12.log",
+            "hash": "1fdc576080b55ceee518f8151778c37af7d01a06f4d86acaa566bb3d41fe8dac"
+        },
+        {
+            "date": 1686294004327,
+            "name": "log\\winston\\error\\error-2023-06-09-13.log",
+            "hash": "ca2ac657692755765ccde342b0e3d83e6528b4d7fa0ff12c270f3076023b08f3"
         }
     ],
     "hashType": "sha256"

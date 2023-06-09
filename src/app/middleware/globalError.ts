@@ -7,7 +7,7 @@ import { ZodError } from 'zod'
 import { handleZodError } from '../../ErrorHandler/handleZodError'
 
 const globalError: ErrorRequestHandler = (error, req, res, next) => {
-  let statusCode = 500
+  let statusCode = error.statusCode || 500
   let message = error.message || 'Internal server error occurred'
   let errorMessages: IErrorMessage[] = [
     {
@@ -28,7 +28,7 @@ const globalError: ErrorRequestHandler = (error, req, res, next) => {
     message = zodError.message
   }
 
-  errorLogger(message)
+  errorLogger(` [${statusCode}]: ${message}`)
 
   res.status(statusCode).send({
     success: false,
