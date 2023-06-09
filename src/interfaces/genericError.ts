@@ -7,5 +7,5 @@ export type IErrorResponse = {
   success: boolean
   message: string
   errorMessages: IErrorMessage[]
-  stack?: any
+  stack?: unknown
 }
