@@ -11,5 +11,4 @@ const moduleRoute = [
 
 moduleRoute.forEach((route) => router.use(route.path, route.routes))
 
-
 export default router

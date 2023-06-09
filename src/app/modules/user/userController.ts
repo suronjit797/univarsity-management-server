@@ -29,7 +29,7 @@ export const createUser: RequestHandler = async (req, res, next) => {
 export const getAllUsers: RequestHandler = async (req, res, next) => {
   try {
     const paginationOption = pic(req.query, paginationOptionArr)
-    
+
     const users = await userService.getAllUserService(paginationOption)
 
     const payload: TPayload<IUser[]> = {

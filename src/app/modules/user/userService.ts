@@ -35,7 +35,6 @@ type IGenericResponse<T> = {
 export const getAllUserService = async (paginationOption: IPagination): Promise<IGenericResponse<IUser[]>> => {
   const { page, limit, skip, sortCondition } = calculation(paginationOption)
 
-
   const data = await User.find().limit(limit).skip(skip).sort(sortCondition)
   const total = await User.countDocuments()
   // return data

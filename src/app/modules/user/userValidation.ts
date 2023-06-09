@@ -5,4 +5,3 @@ export const userValidationZod = z.object({
   role: z.string(),
   password: z.string(),
 })
-
