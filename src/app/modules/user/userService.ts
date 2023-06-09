@@ -1,6 +1,7 @@
 import config from '../../../config'
 import { calculation } from '../../../helper/paginationHelper'
 import { IPagination } from '../../../interfaces/queryInterfaces'
+import { IGenericResponse } from '../../../interfaces/responseInterface'
 import { IUser } from './userInterface'
 import User from './userModel'
 import { generateUserId } from './userUtils'
@@ -23,14 +24,6 @@ export const createUserService = async (user: IUser): Promise<IUser | null> => {
   return newUser
 }
 
-type IGenericResponse<T> = {
-  meta: {
-    page: number
-    limit: number
-    total: number
-  }
-  data: T
-}
 
 export const getAllUserService = async (paginationOption: IPagination): Promise<IGenericResponse<IUser[]>> => {
   const { page, limit, skip, sortCondition } = calculation(paginationOption)
