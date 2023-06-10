@@ -6,6 +6,6 @@ import * as semesterController from './semesterController'
 const semesterRouter = express.Router()
 
 semesterRouter.post('/create', validatorMiddleware(semesterValidationZod), semesterController.createSemester)
-semesterRouter.get('/all',  semesterController.getAllSemester)
+semesterRouter.get('/all', semesterController.getAllSemester)
 
 export default semesterRouter

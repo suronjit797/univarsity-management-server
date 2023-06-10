@@ -6,6 +6,8 @@ import httpStatus from 'http-status'
 import sendResponse from '../../../shared/sendResponse'
 import pic from '../../../shared/pick'
 import { paginationOptionArr } from '../../../constants/pagination'
+import AcademicSemester from './semesterModel'
+import { searchingAndFiltering } from '../../../helper/searchingHelper'
 
 export const createSemester: RequestHandler = async (req, res, next) => {
   try {
@@ -25,8 +27,18 @@ export const createSemester: RequestHandler = async (req, res, next) => {
 
 export const getAllSemester: RequestHandler = async (req, res, next) => {
   try {
+
+    const partialSearchableFields = ['title', 'code']
+    searchingAndFiltering(new AcademicSemester, req, partialSearchableFields)
+
+
+
+    const schemaKeys = Object.keys(AcademicSemester.schema.obj)
+    const filter = pic(req.query, ['searchTerm', ...schemaKeys])
     const paginationOption = pic(req.query, paginationOptionArr)
-    const semesters = await semesterService.getAllSemester(paginationOption)
+
+    // service
+    const semesters = await semesterService.getAllSemesterService(filter, paginationOption)
 
     const payload: TPayload<ISemester[]> = {
       statusCode: httpStatus.OK,

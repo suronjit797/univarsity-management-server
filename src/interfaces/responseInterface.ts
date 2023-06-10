@@ -21,8 +21,6 @@ export type TResponse<T> = {
   }
 }
 
-
-
 export type IGenericResponse<T> = {
   meta: {
     page: number

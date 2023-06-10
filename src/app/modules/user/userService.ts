@@ -24,7 +24,6 @@ export const createUserService = async (user: IUser): Promise<IUser | null> => {
   return newUser
 }
 
-
 export const getAllUserService = async (paginationOption: IPagination): Promise<IGenericResponse<IUser[]>> => {
   const { page, limit, skip, sortCondition } = calculation(paginationOption)
 
