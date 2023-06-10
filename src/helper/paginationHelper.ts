@@ -17,8 +17,8 @@ type ICalculationReturn = {
 }
 
 export const calculation = (option: IOptions): ICalculationReturn => {
-  const page = Math.abs(Number(option.page || 1))
-  const limit = Math.abs(Number(option.limit || 100))
+  const page = Math.abs(Number(option.page) || 1)
+  const limit = Math.abs(Number(option.limit) || 100)
   const skip = (page - 1) * limit
 
   const sortOrder = option.sortOrder || 'desc'

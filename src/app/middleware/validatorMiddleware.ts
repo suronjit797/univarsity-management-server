@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { AnyZodObject } from 'zod'
+import { AnyZodObject, ZodEffects } from 'zod'
 
 export const validatorMiddleware =
-  (validatorZod: AnyZodObject) => async (req: Request, res: Response, next: NextFunction) => {
+  (validatorZod: AnyZodObject | ZodEffects<AnyZodObject>) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       await validatorZod.parseAsync(req.body)
 

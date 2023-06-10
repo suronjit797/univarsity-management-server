@@ -25,7 +25,7 @@ app.use(globalError)
 // handle not found route
 
 app.use((req: Request, res: Response) => {
-  res.status(404).send({
+  return res.status(404).send({
     success: false,
     message: 'Route not found',
     errorMessages: [

@@ -4,7 +4,7 @@ import { ZodError, ZodIssue } from 'zod'
 export const handleZodError = (err: ZodError) => {
   const errors: IErrorMessage[] = err.errors.map((item: ZodIssue) => ({
     path: item?.path[0],
-    message: `${item?.path[0]} is ${item?.message}`,
+    message: `${item?.path[0] ? item?.path[0] + 'is ' : ''}${item?.message}`,
   }))
 
   const result = {
@@ -15,3 +15,5 @@ export const handleZodError = (err: ZodError) => {
   }
   return result
 }
+
+export default handleZodError

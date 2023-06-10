@@ -8,6 +8,7 @@ import pic from '../../../shared/pick'
 import { paginationOptionArr } from '../../../constants/pagination'
 import AcademicSemester from './semesterModel'
 import { searchingAndFiltering } from '../../../helper/searchingHelper'
+import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
 
 export const createSemester: RequestHandler = async (req, res, next) => {
   try {
@@ -27,14 +28,11 @@ export const createSemester: RequestHandler = async (req, res, next) => {
 
 export const getAllSemester: RequestHandler = async (req, res, next) => {
   try {
-
     const partialSearchableFields = ['title', 'code']
-    searchingAndFiltering(new AcademicSemester, req, partialSearchableFields)
+    // get searching and filtering data
+    const filter: ISearchingAndFiltering = searchingAndFiltering(req, new AcademicSemester(), partialSearchableFields)
 
-
-
-    const schemaKeys = Object.keys(AcademicSemester.schema.obj)
-    const filter = pic(req.query, ['searchTerm', ...schemaKeys])
+    // get pagination data
     const paginationOption = pic(req.query, paginationOptionArr)
 
     // service
@@ -43,9 +41,43 @@ export const getAllSemester: RequestHandler = async (req, res, next) => {
     const payload: TPayload<ISemester[]> = {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Get user successfully',
+      message: 'Get semester successfully',
       meta: semesters.meta,
       data: semesters.data,
+    }
+    sendResponse(res, payload)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getSingleSemester: RequestHandler = async (req, res, next) => {
+  try {
+    const { semesterId } = req.params
+    const semester = await semesterService.getSingleSemesterService(semesterId)
+
+    const payload: TPayload<ISemester> = {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get semester successfully',
+      data: semester,
+    }
+    sendResponse(res, payload)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const updateSingleSemester: RequestHandler = async (req, res, next) => {
+  try {
+    const { semesterId } = req.params
+    const semester = await semesterService.updateSingleSemesterService(semesterId, req.body)
+
+    const payload: TPayload<ISemester> = {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Update semester successfully',
+      data: semester,
     }
     sendResponse(res, payload)
   } catch (error) {

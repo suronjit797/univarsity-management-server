@@ -1,11 +1,14 @@
 import { ErrorRequestHandler } from 'express'
 import config from '../../config'
-import { handleValidationError } from '../../ErrorHandler/HandlerValidationError'
 import { IErrorMessage } from '../../interfaces/genericError'
 import { errorLogger } from '../../shared/logger'
 import { ZodError } from 'zod'
-import { handleZodError } from '../../ErrorHandler/handleZodError'
+// errors
+import handleZodError from '../../ErrorHandler/handleZodError'
+import handleValidationError from '../../ErrorHandler/handleValidationError'
+import handleCastError from '../../ErrorHandler/handleCastError'
 
+// eslint-disable-next-line no-unused-vars
 const globalError: ErrorRequestHandler = (error, req, res, next) => {
   let statusCode = error.statusCode || 500
   let message = error.message || 'Internal server error occurred'
@@ -26,17 +29,21 @@ const globalError: ErrorRequestHandler = (error, req, res, next) => {
     errorMessages = zodError.errorMessages
     statusCode = zodError.statusCode
     message = zodError.message
+  } else if (error?.name === 'CastError') {
+    const castError = handleCastError(error)
+    errorMessages = castError.errorMessages
+    statusCode = castError.statusCode
+    message = castError.message
   }
 
   errorLogger(` [${statusCode}]: ${message}`)
 
-  res.status(statusCode).send({
+  return res.status(statusCode).send({
     success: false,
     message,
     errorMessages,
     stack: config.NODE_ENV !== 'production' && error?.stack,
   })
-  next()
 }
 
 export default globalError
