@@ -54,3 +54,8 @@ export const updateSingleSemesterService = async (
   const data = await AcademicSemester.findByIdAndUpdate(id, payload, { new: true })
   return data
 }
+
+export const deleteSingleSemesterService = async (id: string) => {
+  const data = await AcademicSemester.findByIdAndDelete(id)
+  return data
+}

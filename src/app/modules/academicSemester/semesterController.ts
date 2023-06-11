@@ -84,3 +84,19 @@ export const updateSingleSemester: RequestHandler = async (req, res, next) => {
     next(error)
   }
 }
+
+export const deleteSingleSemester: RequestHandler = async (req, res, next) => {
+  try {
+    const { semesterId } = req.params
+    const semester = await semesterService.deleteSingleSemesterService(semesterId)
+    const payload: TPayload<ISemester> = {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Semester deleted successfully',
+      data: semester,
+    }
+    sendResponse(res, payload)
+  } catch (error) {
+    next(error)
+  }
+}

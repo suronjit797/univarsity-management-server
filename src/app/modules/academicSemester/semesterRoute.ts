@@ -10,7 +10,11 @@ semesterRouter.get('/all', semesterController.getAllSemester)
 
 // params route
 semesterRouter.get('/:semesterId', semesterController.getSingleSemester)
-semesterRouter.patch('/:semesterId',validatorMiddleware(semesterUpdateValidationZod), semesterController.updateSingleSemester)
-
+semesterRouter.patch(
+  '/:semesterId',
+  validatorMiddleware(semesterUpdateValidationZod),
+  semesterController.updateSingleSemester
+)
+semesterRouter.delete('/:semesterId', semesterController.deleteSingleSemester)
 
 export default semesterRouter
