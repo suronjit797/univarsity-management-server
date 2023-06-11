@@ -5,14 +5,14 @@ const facultySchema = new Schema<IFaculty>(
   {
     title: {
       type: String,
-      required: true
+      required: true,
     },
   },
   {
     timestamps: true,
-    // toJSON: {
-    //   virtuals: true,
-    // },
+    toJSON: {
+      virtuals: true,
+    },
   }
 )
 

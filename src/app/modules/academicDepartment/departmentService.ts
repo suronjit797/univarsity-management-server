@@ -18,7 +18,11 @@ export const createDepartment = async (data: IDepartment): Promise<IDepartment> 
 export const getAllDepartmentService = async (filter: ISearchingAndFiltering, paginationOption: IPagination) => {
   const { limit, page, skip, sortCondition } = calculation(paginationOption)
 
-  const data = await AcademicDepartment.find(filter).limit(limit).skip(skip).sort(sortCondition)
+  const data = await AcademicDepartment.find(filter)
+    .populate('academicFaculty')
+    .limit(limit)
+    .skip(skip)
+    .sort(sortCondition)
   const total = await AcademicDepartment.countDocuments(filter)
 
   // return data
@@ -33,7 +37,7 @@ export const getAllDepartmentService = async (filter: ISearchingAndFiltering, pa
 }
 
 export const getSingleDepartmentService = async (id: string): Promise<IDepartment | null> => {
-  const data = await AcademicDepartment.findById(id)
+  const data = await AcademicDepartment.findById(id).populate('academicFaculty')
   return data
 }
 

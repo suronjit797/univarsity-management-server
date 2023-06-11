@@ -9,7 +9,7 @@ import handleValidationError from '../../ErrorHandler/handleValidationError'
 import handleCastError from '../../ErrorHandler/handleCastError'
 
 // eslint-disable-next-line no-unused-vars
-const globalError: ErrorRequestHandler = (error, req, res) => {
+const globalError: ErrorRequestHandler = (error, req, res, next) => {
   let statusCode = error.statusCode || 500
   let message = error.message || 'Internal server error occurred'
   let errorMessages: IErrorMessage[] = [

@@ -31,7 +31,12 @@ const semesterSchema = new Schema<ISemester>(
       enum: months,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
+  }
 )
 
 semesterSchema.pre('save', async function (next) {
