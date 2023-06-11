@@ -5,8 +5,7 @@ const facultySchema = new Schema<IFaculty>(
   {
     title: {
       type: String,
-      required: true,
-      enum: ['Autumn', 'Summer', 'Fall'],
+      required: true
     },
   },
   {
