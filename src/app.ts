@@ -15,9 +15,8 @@ app.use(morgan('tiny'))
 // route
 app.use('/api/v1', router)
 
-app.get('/', async (req: Request, res: Response, next) => {
-  res.send('<h1> Welcome to PH University </h1>')
-  next()
+app.get('/', async (req: Request, res: Response) => {
+  return res.send('<h1> Welcome to PH University </h1>')
 })
 
 app.use(globalError)

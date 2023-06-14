@@ -6,6 +6,9 @@ import httpStatus from 'http-status'
 import { IUser } from './userInterface'
 import pic from '../../../shared/pick'
 import { paginationOptionArr } from '../../../constants/pagination'
+import { searchingAndFiltering } from '../../../helper/searchingHelper'
+import User from './userModel'
+import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
 
 export const createUser: RequestHandler = async (req, res, next) => {
   try {
@@ -30,7 +33,9 @@ export const getAllUsers: RequestHandler = async (req, res, next) => {
   try {
     const paginationOption = pic(req.query, paginationOptionArr)
 
-    const users = await userService.getAllUserService(paginationOption)
+    const filter:ISearchingAndFiltering = searchingAndFiltering(req, new User(), ['uid, role'])
+
+    const users = await userService.getAllUserService(filter, paginationOption)
 
     const payload: TPayload<IUser[]> = {
       statusCode: httpStatus.OK,
