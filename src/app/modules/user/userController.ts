@@ -10,17 +10,19 @@ import { searchingAndFiltering } from '../../../helper/searchingHelper'
 import User from './userModel'
 import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
 
-export const createUser: RequestHandler = async (req, res, next) => {
+export const createStudent: RequestHandler = async (req, res, next) => {
   try {
-    const data = await userService.createUserService(req.body)
+    const { student, ...userData } = req.body
+    userData.role = 'student'
+    const data = await userService.createStudentService(student, userData)
 
     if (!data) {
-      next('User Create Failed')
+      next('Student Create Failed')
     }
     const payload: TPayload<IUser | null> = {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'User created successfully',
+      message: 'Student created successfully',
       data,
     }
     sendResponse(res, payload)
@@ -33,7 +35,7 @@ export const getAllUsers: RequestHandler = async (req, res, next) => {
   try {
     const paginationOption = pic(req.query, paginationOptionArr)
 
-    const filter:ISearchingAndFiltering = searchingAndFiltering(req, new User(), ['uid, role'])
+    const filter: ISearchingAndFiltering = searchingAndFiltering(req, new User(), ['uid, role'])
 
     const users = await userService.getAllUserService(filter, paginationOption)
 

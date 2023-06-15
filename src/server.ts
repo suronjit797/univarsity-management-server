@@ -18,7 +18,7 @@ const bootFunctions = async () => {
       return errorLogger('Port is not found')
     }
 
-    await mongoose.connect(config.DB_URI as string)
+    await mongoose.connect(config.DB_URI as string,)
     successLogger('🛢 Database connected...')
     server = app.listen(config.PORT, () => {
       successLogger(`App listening on port ${config.PORT}...`)

@@ -11,7 +11,7 @@ const userSchema = new Schema<IUser>(
     },
     role: {
       type: String,
-      enum: ['super_admin','admin', 'student', 'faculty'],
+      enum: ['super_admin', 'admin', 'student', 'faculty'],
       default: 'student',
       required: true,
     },
@@ -19,6 +19,22 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
+    student: {
+      type: Schema.Types.ObjectId,
+      ref: 'Student',
+    },
+    admin: {
+      type: Schema.Types.ObjectId,
+      ref: 'Admin',
+    },
+    faculty: {
+      type: Schema.Types.ObjectId,
+      ref: 'Faculty',
+    },
+    
+
+
+
   },
   {
     timestamps: true,
