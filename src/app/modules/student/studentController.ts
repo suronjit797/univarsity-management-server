@@ -9,6 +9,7 @@ import StudentModel from './studentModel'
 import pic from '../../../shared/pick'
 import { paginationOptionArr } from '../../../constants/pagination'
 import { searchingAndFiltering } from '../../../helper/searchingHelper'
+import { IUser } from '../user/userInterface'
 
 export const getAllStudents: RequestHandler = async (req, res, next) => {
   try {
@@ -38,6 +39,28 @@ export const getAllStudents: RequestHandler = async (req, res, next) => {
       message: 'Student retrieve successfully',
       meta: student.meta,
       data: student.data,
+    }
+    sendResponse(res, payload)
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+export const createStudent: RequestHandler = async (req, res, next) => {
+  try {
+    const { student, ...userData } = req.body
+    userData.role = 'student'
+    const data = await studentService.createStudentService(student, userData)
+
+    if (!data) {
+      next('Student Create Failed')
+    }
+    const payload: TPayload<IUser | null> = {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Student created successfully',
+      data,
     }
     sendResponse(res, payload)
   } catch (error) {

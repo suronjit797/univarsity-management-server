@@ -10,26 +10,6 @@ import { searchingAndFiltering } from '../../../helper/searchingHelper'
 import User from './userModel'
 import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
 
-export const createStudent: RequestHandler = async (req, res, next) => {
-  try {
-    const { student, ...userData } = req.body
-    userData.role = 'student'
-    const data = await userService.createStudentService(student, userData)
-
-    if (!data) {
-      next('Student Create Failed')
-    }
-    const payload: TPayload<IUser | null> = {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Student created successfully',
-      data,
-    }
-    sendResponse(res, payload)
-  } catch (error) {
-    next(error)
-  }
-}
 
 export const getAllUsers: RequestHandler = async (req, res, next) => {
   try {
