@@ -59,4 +59,3 @@ export const deleteSingleSemesterService = async (id: string) => {
   const data = await AcademicSemesterModel.findByIdAndDelete(id)
   return data
 }
-

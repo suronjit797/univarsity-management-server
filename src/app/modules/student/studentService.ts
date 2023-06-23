@@ -4,13 +4,8 @@ import { calculation } from '../../../helper/paginationHelper'
 import { IPagination } from '../../../interfaces/queryInterfaces'
 import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
 import StudentModel from './studentModel'
-import config from '../../../config'
 import { IStudent } from './studentInterface'
-import { IUser } from '../user/userInterface'
-import mongoose from 'mongoose'
-import { generateStudentId } from './studentsUtils'
-import User from '../user/userModel'
-import AcademicSemesterModel from '../academicSemester/semesterModel'
+
 
 export const getAllStudentService = async (filter: ISearchingAndFiltering, paginationOption: IPagination) => {
   const { limit, page, skip, sortCondition } = calculation(paginationOption)
@@ -34,61 +29,35 @@ export const getAllStudentService = async (filter: ISearchingAndFiltering, pagin
   }
 }
 
-export const createStudentService = async (student: IStudent, user: IUser): Promise<IUser | null> => {
-  if (!user.password) {
-    user.password = config.DEFAULT_STUDENT_PASS as string
-  }
-  const academicSemester = await AcademicSemesterModel.findById(student.academicSemester)
-
-  let newUserAllData
-  const session = await mongoose.startSession()
-  try {
-    session.startTransaction()
-
-    // generate student id
-    const uid = await generateStudentId(academicSemester)
-    if (uid) {
-      user.uid = uid
-      student.uid = uid
-    }
-    const createdStudent = await StudentModel.create([student], { session })
-    if (createdStudent.length <= 0) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create student')
-    }
-    user.student = createdStudent[0]._id
-
-    const newUser = await User.create([user], { session })
-
-    if (newUser.length <= 0) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user')
-    }
-    newUserAllData = newUser[0]
-
-    await session.commitTransaction()
-    await session.endSession()
-  } catch (error) {
-    await session.abortTransaction()
-    await session.endSession()
-    throw error
-  }
-
-  if (newUserAllData) {
-    newUserAllData = await User.findById(newUserAllData._id).populate({
-      path: 'student',
-      populate: [{ path: 'academicSemester' }, { path: 'academicDepartment' }, { path: 'academicFaculty' }],
-    })
-  }
-
-  return newUserAllData
-}
 
 export const getSingleStudentService = async (id: string): Promise<IStudent | null> => {
   const data = await StudentModel.findById(id)
+    .populate('academicSemester')
+    .populate('academicDepartment')
+    .populate('academicFaculty')
   return data
 }
 
 export const updateSingleStudentService = async (id: string, payload: Partial<IStudent>): Promise<IStudent | null> => {
-  const data = await StudentModel.findByIdAndUpdate(id, payload, { new: true })
+  const isExistStudent = await StudentModel.findById(id)
+  if (!isExistStudent) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Student not found')
+  }
+  const { name, guardian, localGuardian } = payload
+
+  const updaterStudent = isExistStudent 
+
+  if (name && Object.keys(name).length > 0) {
+    updaterStudent.name = { ...isExistStudent.name, ...name }
+  }
+  if (guardian && Object.keys(guardian).length > 0) {
+    updaterStudent.guardian = { ...isExistStudent.guardian, ...guardian }
+  }
+  if (localGuardian && Object.keys(localGuardian).length > 0) {
+    updaterStudent.localGuardian = { ...isExistStudent.localGuardian, ...localGuardian }
+  }
+
+  const data = await StudentModel.findByIdAndUpdate(id, updaterStudent, { new: true })
   return data
 }
 
