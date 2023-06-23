@@ -46,7 +46,6 @@ export const getAllStudents: RequestHandler = async (req, res, next) => {
   }
 }
 
-
 export const createStudent: RequestHandler = async (req, res, next) => {
   try {
     const { student, ...userData } = req.body
@@ -61,6 +60,56 @@ export const createStudent: RequestHandler = async (req, res, next) => {
       success: true,
       message: 'Student created successfully',
       data,
+    }
+    sendResponse(res, payload)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getSingleSemester: RequestHandler = async (req, res, next) => {
+  try {
+    const { semesterId } = req.params
+    const semester = await studentService.getSingleStudentService(semesterId)
+
+    const payload: TPayload<IStudent> = {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Get semester successfully',
+      data: semester,
+    }
+    sendResponse(res, payload)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const updateSingleSemester: RequestHandler = async (req, res, next) => {
+  try {
+    const { semesterId } = req.params
+    const semester = await studentService.updateSingleStudentService(semesterId, req.body)
+
+    const payload: TPayload<IStudent> = {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Update semester successfully',
+      data: semester,
+    }
+    sendResponse(res, payload)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const deleteSingleSemester: RequestHandler = async (req, res, next) => {
+  try {
+    const { semesterId } = req.params
+    const semester = await studentService.deleteSingleStudentService(semesterId)
+    const payload: TPayload<IStudent> = {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Semester deleted successfully',
+      data: semester,
     }
     sendResponse(res, payload)
   } catch (error) {

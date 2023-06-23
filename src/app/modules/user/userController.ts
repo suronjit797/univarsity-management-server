@@ -10,7 +10,6 @@ import { searchingAndFiltering } from '../../../helper/searchingHelper'
 import User from './userModel'
 import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
 
-
 export const getAllUsers: RequestHandler = async (req, res, next) => {
   try {
     const paginationOption = pic(req.query, paginationOptionArr)

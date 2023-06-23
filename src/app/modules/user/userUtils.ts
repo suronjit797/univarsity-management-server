@@ -1,6 +1,4 @@
-
 import User from './userModel'
-
 
 export const generateFacultyId = async (): Promise<string> => {
   // auto generated userId

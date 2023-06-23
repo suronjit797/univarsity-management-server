@@ -5,8 +5,6 @@ import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFilterin
 import { IUser } from './userInterface'
 import User from './userModel'
 
-
-
 export const getAllUserService = async (
   filter: ISearchingAndFiltering,
   paginationOption: IPagination

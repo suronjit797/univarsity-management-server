@@ -7,14 +7,20 @@ import StudentModel from './studentModel'
 import config from '../../../config'
 import { IStudent } from './studentInterface'
 import { IUser } from '../user/userInterface'
-import AcademicSemesterModel from '../academicSemester/semesterModel'
 import mongoose from 'mongoose'
 import { generateStudentId } from './studentsUtils'
 import User from '../user/userModel'
+import AcademicSemesterModel from '../academicSemester/semesterModel'
 
 export const getAllStudentService = async (filter: ISearchingAndFiltering, paginationOption: IPagination) => {
   const { limit, page, skip, sortCondition } = calculation(paginationOption)
-  const data = await StudentModel.find(filter).limit(limit).skip(skip).sort(sortCondition)
+  const data = await StudentModel.find(filter)
+    .populate('academicSemester')
+    .populate('academicDepartment')
+    .populate('academicFaculty')
+    .limit(limit)
+    .skip(skip)
+    .sort(sortCondition)
   const total = await StudentModel.countDocuments(filter)
 
   // return data
@@ -74,4 +80,19 @@ export const createStudentService = async (student: IStudent, user: IUser): Prom
   }
 
   return newUserAllData
+}
+
+export const getSingleStudentService = async (id: string): Promise<IStudent | null> => {
+  const data = await StudentModel.findById(id)
+  return data
+}
+
+export const updateSingleStudentService = async (id: string, payload: Partial<IStudent>): Promise<IStudent | null> => {
+  const data = await StudentModel.findByIdAndUpdate(id, payload, { new: true })
+  return data
+}
+
+export const deleteSingleStudentService = async (id: string) => {
+  const data = await StudentModel.findByIdAndDelete(id)
+  return data
 }
