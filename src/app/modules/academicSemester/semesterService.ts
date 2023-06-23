@@ -4,7 +4,7 @@ import { IPagination } from '../../../interfaces/queryInterfaces'
 import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
 import { academicSemesterTitleCodeMapper } from './semesterConstant'
 import { ISemester } from './semesterInterface'
-import AcademicSemester from './semesterModel'
+import AcademicSemesterModel from './semesterModel'
 import httpStatus from 'http-status'
 
 //   const keys = Object.keys(AcademicSemester.schema.obj)
@@ -14,7 +14,7 @@ export const createSemester = async (data: ISemester): Promise<ISemester> => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid code')
   }
 
-  const result = await AcademicSemester.create(data)
+  const result = await AcademicSemesterModel.create(data)
   if (!result) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Semester create failed')
   }
@@ -25,8 +25,8 @@ export const createSemester = async (data: ISemester): Promise<ISemester> => {
 export const getAllSemesterService = async (filter: ISearchingAndFiltering, paginationOption: IPagination) => {
   const { limit, page, skip, sortCondition } = calculation(paginationOption)
 
-  const data = await AcademicSemester.find(filter).limit(limit).skip(skip).sort(sortCondition)
-  const total = await AcademicSemester.countDocuments(filter)
+  const data = await AcademicSemesterModel.find(filter).limit(limit).skip(skip).sort(sortCondition)
+  const total = await AcademicSemesterModel.countDocuments(filter)
 
   // return data
   return {
@@ -40,7 +40,7 @@ export const getAllSemesterService = async (filter: ISearchingAndFiltering, pagi
 }
 
 export const getSingleSemesterService = async (id: string): Promise<ISemester | null> => {
-  const data = await AcademicSemester.findById(id)
+  const data = await AcademicSemesterModel.findById(id)
   return data
 }
 
@@ -51,11 +51,11 @@ export const updateSingleSemesterService = async (
   if (payload.title && payload.code && academicSemesterTitleCodeMapper[payload.title] !== payload.code) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid code')
   }
-  const data = await AcademicSemester.findByIdAndUpdate(id, payload, { new: true })
+  const data = await AcademicSemesterModel.findByIdAndUpdate(id, payload, { new: true })
   return data
 }
 
 export const deleteSingleSemesterService = async (id: string) => {
-  const data = await AcademicSemester.findByIdAndDelete(id)
+  const data = await AcademicSemesterModel.findByIdAndDelete(id)
   return data
 }

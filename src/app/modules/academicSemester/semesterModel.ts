@@ -40,13 +40,13 @@ const semesterSchema = new Schema<ISemester>(
 )
 
 semesterSchema.pre('save', async function (next) {
-  const isExist = await AcademicSemester.find({ title: this.title, year: this.year })
+  const isExist = await AcademicSemesterModel.find({ title: this.title, year: this.year })
   if (isExist.length > 0) {
     throw new ApiError(httpStatus.NOT_ACCEPTABLE, `${this.title} already exists in ${this.year}`)
   }
   next()
 })
 
-const AcademicSemester = model<ISemester, SemesterModel>('AcademicSemester', semesterSchema)
+const AcademicSemesterModel = model<ISemester, SemesterModel>('AcademicSemester', semesterSchema)
 
-export default AcademicSemester
+export default AcademicSemesterModel

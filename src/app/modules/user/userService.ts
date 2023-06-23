@@ -4,7 +4,7 @@ import { calculation } from '../../../helper/paginationHelper'
 import { IPagination } from '../../../interfaces/queryInterfaces'
 import { IGenericResponse } from '../../../interfaces/responseInterface'
 import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
-import AcademicSemester from '../academicSemester/semesterModel'
+import AcademicSemesterModel from '../academicSemester/semesterModel'
 import { IStudent } from '../student/studentInterface'
 import { IUser } from './userInterface'
 import User from './userModel'
@@ -17,7 +17,7 @@ export const createStudentService = async (student: IStudent, user: IUser): Prom
   if (!user.password) {
     user.password = config.DEFAULT_STUDENT_PASS as string
   }
-  const academicSemester = await AcademicSemester.findById(student.academicSemester)
+  const academicSemester = await AcademicSemesterModel.findById(student.academicSemester)
 
   let newUserAllData
   const session = await mongoose.startSession()

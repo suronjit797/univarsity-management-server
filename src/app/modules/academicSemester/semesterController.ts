@@ -6,7 +6,7 @@ import httpStatus from 'http-status'
 import sendResponse from '../../../shared/sendResponse'
 import pic from '../../../shared/pick'
 import { paginationOptionArr } from '../../../constants/pagination'
-import AcademicSemester from './semesterModel'
+import AcademicSemesterModel from './semesterModel'
 import { searchingAndFiltering } from '../../../helper/searchingHelper'
 import { ISearchingAndFiltering } from '../../../interfaces/searchingAndFiltering'
 
@@ -30,7 +30,11 @@ export const getAllSemester: RequestHandler = async (req, res, next) => {
   try {
     const partialSearchableFields = ['title', 'code']
     // get searching and filtering data
-    const filter: ISearchingAndFiltering = searchingAndFiltering(req, new AcademicSemester(), partialSearchableFields)
+    const filter: ISearchingAndFiltering = searchingAndFiltering(
+      req,
+      new AcademicSemesterModel(),
+      partialSearchableFields
+    )
 
     // get pagination data
     const paginationOption = pic(req.query, paginationOptionArr)
